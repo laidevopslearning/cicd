@@ -1,0 +1,25 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main  # or the branch you want to deploy from
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.KEYFILE }}
+
+      - name: Deploy to EC2
+        run: |
+          echo "Deploying to EC2..."
+          # Replace the following command with your actual deployment command
+          scp -o StrictHostKeyChecking=no -r ./index.html ${{ secrets.USER }}@${{ secrets.IP }}:/var/www/html
